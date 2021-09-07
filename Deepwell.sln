@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2047
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepwell.Data", "Deepwell.Data\Deepwell.Data.csproj", "{B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BEA37B82-0B1C-4F4F-B363-54798758DC9D} = {BEA37B82-0B1C-4F4F-B363-54798758DC9D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepwell.Common", "Deepwell.Common\Deepwell.Common.csproj", "{BEA37B82-0B1C-4F4F-B363-54798758DC9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepwell.Factory", "Deepwell.Factory\Deepwell.Factory.csproj", "{35DF1167-8092-4642-86AC-E3676ED36A91}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BEA37B82-0B1C-4F4F-B363-54798758DC9D} = {BEA37B82-0B1C-4F4F-B363-54798758DC9D}
+		{B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9} = {B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepwell.Front", "Deepwell.Front\Deepwell.Front.csproj", "{D7748999-B512-4C99-A358-4E1F5456CC55}"
+	ProjectSection(ProjectDependencies) = postProject
+		{35DF1167-8092-4642-86AC-E3676ED36A91} = {35DF1167-8092-4642-86AC-E3676ED36A91}
+		{BEA37B82-0B1C-4F4F-B363-54798758DC9D} = {BEA37B82-0B1C-4F4F-B363-54798758DC9D}
+		{B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9} = {B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B29DF6-9C6F-4ACB-9435-E17C2C0921D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA37B82-0B1C-4F4F-B363-54798758DC9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA37B82-0B1C-4F4F-B363-54798758DC9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA37B82-0B1C-4F4F-B363-54798758DC9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA37B82-0B1C-4F4F-B363-54798758DC9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35DF1167-8092-4642-86AC-E3676ED36A91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35DF1167-8092-4642-86AC-E3676ED36A91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35DF1167-8092-4642-86AC-E3676ED36A91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35DF1167-8092-4642-86AC-E3676ED36A91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7748999-B512-4C99-A358-4E1F5456CC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7748999-B512-4C99-A358-4E1F5456CC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7748999-B512-4C99-A358-4E1F5456CC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7748999-B512-4C99-A358-4E1F5456CC55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35AD8BFF-7C6D-4F26-8E7C-02C94902D6A0}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://synzeetfs.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Deepwell.Common\\Deepwell.Common.csproj
+		SccProjectName1 = Deepwell.Common
+		SccLocalPath1 = Deepwell.Common
+		SccProjectUniqueName2 = Deepwell.Data\\Deepwell.Data.csproj
+		SccProjectName2 = Deepwell.Data
+		SccLocalPath2 = Deepwell.Data
+		SccProjectUniqueName3 = Deepwell.Factory\\Deepwell.Factory.csproj
+		SccProjectName3 = Deepwell.Factory
+		SccLocalPath3 = Deepwell.Factory
+		SccProjectUniqueName4 = Deepwell.Front\\Deepwell.Front.csproj
+		SccProjectName4 = Deepwell.Front
+		SccLocalPath4 = Deepwell.Front
+	EndGlobalSection
+EndGlobal
