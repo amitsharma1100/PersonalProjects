@@ -1,0 +1,91 @@
+﻿@model Deepwell.Front.Models.Customer.CustomerSearchModel
+@using Deepwell.Common;
+
+@{
+    ViewBag.Title = "Manage";
+}
+
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,4.52-2.98,8.69-7,9.93
+         			C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z" />
+                <polygon points="7.41,11.59 6,13 10,17 18,9 16.59,7.58 10,14.17" />
+            </svg>
+            Manage Customer
+        </h1>
+
+        <div class="top_msgs" style="color:green">
+            <h4>@ViewBag.Message</h4>
+        </div>
+
+        <div class="right_btns">
+            @if (Model.IsAdministrator)
+            {
+                <a class="link_btn" href="@Url.Action("Add", "Customer")">Create New customer</a>
+            }
+        </div>
+    </div>
+
+    <div class="r_wrapper">
+        <div class="ctrl_panel">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="col col_20 pd_both">
+                    <div class="ctrl_group">
+                        @Html.LabelFor(model => model.CustomerNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.EditorFor(model => model.CustomerNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="col col_20 pd_both">
+                    <div class="ctrl_group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="col col_20 pd_both">
+                    <div class="ctrl_group">
+                        @Html.LabelFor(model => model.Status)
+                        @Html.EnumDropDownListFor(model => model.Status, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col col_20 pd_both">
+                    <div class="ctrl_group">
+                        @Html.LabelFor(model => model.Type)
+                        @Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col col_20 pd_both">
+                    <div class="ctrl_group">
+                        @Html.LabelFor(model => model.Taxable, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.DropDownListFor(m => m.Taxable, Model.Taxable, new { @class = "dropdown" })
+                    </div>
+                </div>
+
+                <div class="btn_ftr">
+                    <input type="button" id="Search" value="Search" class="btn blue_btn" />
+                    <input type="button" id="Reset" value="Reset" class="btn grey_btn" />
+                </div>
+
+            </div><!--/.row-->
+            }
+
+        </div><!--/ctrl_panel-->
+
+        <div id="searchData" data-searchurl=@Url.Action("Search", "Customer") />
+        <div id="searchResults"></div>
+    </div><!--/.r_wrapper-->
+</div><!--/.container-->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/customer")
+}

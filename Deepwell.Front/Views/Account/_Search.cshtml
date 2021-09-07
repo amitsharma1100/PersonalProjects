@@ -1,0 +1,58 @@
+﻿@model  PagedList.IPagedList<Deepwell.Front.Models.User.SearchViewModel>
+@using Deepwell.Common.Extensions
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Search";
+}
+
+
+<div class="table_panel">
+    @if (Model.IsNotNull() && Model.Any())
+    {
+        <table>
+            <thead>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.First().EmployeeId)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().FirstName)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().LastName)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().IsActive)</td>
+                    @if (Model.Any(i => i.IsAdministrator))
+                    {
+                        <td style="width: 220px;">&nbsp;</td>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="activated_row">
+                        <td>@Html.DisplayFor(modelItem => item.EmployeeId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+                        @if (item.IsAdministrator)
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "EditStaff", new { id = item.EmployeeId }, new { @class = "action_btn edit" })
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="pagination_panel">
+            <div class="show_sum">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                of @Model.PageCount
+            </div>
+            @Html.PagedListPager(Model, page => "javascript:ManageUser.search(" + page + ")")
+        </div>
+    }
+    else
+    {
+        <div class="no_result">No results were found.</div>
+    }
+</div><!--/.table_panel-->

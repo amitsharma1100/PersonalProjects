@@ -1,0 +1,66 @@
+﻿@model PagedList.IPagedList<Deepwell.Front.Models.Order.OrderSearchResponseModel>
+@using Deepwell.Common.Extensions
+@using PagedList.Mvc;
+
+<div class="table_panel">
+    @if (Model.IsNotNull() && Model.Any())
+    {
+        <table>
+            <thead>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.First().OrderId)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().OrderDate)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().OrderStatus)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().ProductNumber)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().ProductName)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().CustomerNumber)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().CustomerName)</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                    int prevOrderId = 0;
+                    string style1 = "background-color:white";
+                    string style2 = "background-color:MintCream";
+
+                    string style = style2;
+                    foreach (var item in Model)
+                    {
+                        if (prevOrderId != item.OrderId)
+                        {
+                            style = style == style1 ? style2 : style1;
+                            prevOrderId = item.OrderId;
+                        }
+
+                        <tr class="activated_row" style="@style">
+                            <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OrderStatus)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ProductNumber)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CustomerNumber)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CustomerName)</td>
+                            <td>
+                                @Html.ActionLink(item.EditButtonText, "OrderDetail", new { id = item.OrderId }, new { @class = "action_btn edit" })
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <div class="pagination_panel">
+            <div class="show_sum">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                of @Model.PageCount
+            </div>
+            @Html.PagedListPager(Model, page => "javascript:ManageOrders.search(" + page + ")")
+        </div>
+    }
+    else
+    {
+        <div class="no_result">No results were found.</div>
+    }
+</div>

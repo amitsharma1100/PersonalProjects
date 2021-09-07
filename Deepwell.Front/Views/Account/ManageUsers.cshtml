@@ -1,0 +1,84 @@
+﻿@model Deepwell.Front.Models.User.SearchViewModel
+
+@{
+    ViewBag.Title = "Manage Users";
+}
+
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,4.52-2.98,8.69-7,9.93
+         			C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z" />
+                <polygon points="7.41,11.59 6,13 10,17 18,9 16.59,7.58 10,14.17" />
+            </svg>
+            Manage Users
+        </h1>
+
+        <div id="topMessage" class="top_msgs" style="color:green">
+            <h4>@Model.ValidationMessage</h4>
+        </div>
+
+        <div class="right_btns">
+            @if (Model.IsAdministrator)
+            {
+                <a href=@Url.Action("RegisterStaff", "Account") class="link_btn">Add New User</a>
+
+                @*<button class="link_btn" data-role="popup" data-target="create_new_user_popup">create new user</button>*@
+            }
+        </div>
+    </div>
+
+    <div class="r_wrapper">
+        <div class="ctrl_panel">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.FirstName)
+                            @Html.EditorFor(model => model.FirstName)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.LastName)
+                            @Html.EditorFor(model => model.LastName)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.EmployeeId)
+                            @Html.EditorFor(model => model.EmployeeId)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.IsActive)
+                            @Html.DropDownListFor(m => m.IsActiveOptions, Model.IsActiveOptions)
+                        </div>
+                    </div>
+
+                    <div class="btn_ftr">
+                        <input type="button" id="Search" value="Search" class="btn blue_btn" />
+                        <input type="button" id="Reset" value="Reset" class="btn grey_btn" />
+                    </div>
+                </div><!--/.row-->
+            }
+        </div><!--/ctrl_panel-->
+
+        <div id="searchData" data-searchurl=@Url.Action("Search", "Account") />
+        <div id="searchResults"></div>
+    </div><!--/.r_wrapper-->
+</div><!--/.container-->
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/user")
+}

@@ -1,0 +1,101 @@
+﻿@model Deepwell.Front.Models.Inventory.InventoryLogViewModel
+
+<div id="inventory_change_log" class="tab_content">
+    <div class="clr_ht" style="height: 10px;"></div>
+    <div class="divider_hd mr_tp_20">
+        <span class="txt">Filter By Location</span>
+    </div>
+
+    <div class="r_wrapper">
+        <div class="ctrl_panel">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = "color:red" })
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(m => m.ChangeTypeSelected)
+                            @Html.DropDownListFor(m => m.ChangeTypeSelected, Model.InventoryChangeTypes, "Select Change types")                           
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(m => m.LocationSelected)
+                            @Html.DropDownListFor(m => m.LocationSelected, Model.Locations, "Select Location")                            
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.FromDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.TextBoxFor(m => m.FromDate)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.ToDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.TextBoxFor(m => m.ToDate)
+                        </div>
+                    </div>
+
+                    <div class="btn_ftr">
+                        <input type="button" id="Search" value="Search" class="btn blue_btn" />
+                        <input type="button" id="Reset" value="Reset" class="btn grey_btn" />
+                    </div>
+                </div>
+            }
+        </div><!--/.ctrl_panel-->
+
+        <div id="searchData" data-searchurl=@Url.Action("Search", "Product") />
+        <div id="searchResults"></div>
+    </div><!--/.r_wrapper-->
+
+    <div class="inline_form">
+        <span class="lbl">Location</span>
+
+        <select class="ctrl">
+            <option>Select</option>
+        </select>
+
+        <button class="link_btn">View</button>
+    </div><!--/inline_form-->
+
+    <div class="clr_ht"></div>
+    <div class="divider_hd mr_tp_20">
+        <span class="txt">Change Logs</span>
+    </div>
+
+
+    <div class="table_panel">
+        <table>
+            <thead>
+                <tr>
+                    <td>Location</td>
+                    <td>Inventory Change</td>
+                    <td>Change type</td>
+                    <td>Remark</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Location</td>
+                    <td>Inventory Change</td>
+                    <td>Change type</td>
+                    <td>Remark</td>
+                </tr>
+            </tbody>
+        </table>
+    </div><!---/.table_panel-->
+
+
+    <div class="btns_center">
+        <input type="submit" name="name" value="Save" class="link_btn" />
+        <a class="link_btn faded" href="@Url.Action("ManageProducts", "Product")">Cancel</a>
+    </div>
+</div><!--/.inventory_change_log-->
+

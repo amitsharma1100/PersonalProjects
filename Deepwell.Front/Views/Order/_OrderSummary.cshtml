@@ -1,0 +1,45 @@
+﻿@model Deepwell.Front.Models.Order.OrderSummaryViewModel
+
+<div class="divider_hd mr_tp_20">
+    <span class="txt">Total</span>
+</div>
+
+<div class="row">
+    <div class="col col_25 pd_both">
+        <div class="ctrl_group">
+            Order Total
+        </div>
+    </div>
+
+    @*<div class="col col_25 pd_both">
+        <div class="ctrl_group">
+            Sum of Taxable Items
+        </div>
+    </div>
+
+    <div class="col col_25 pd_both">
+        <div class="ctrl_group">
+            Sum of Non Taxable Items
+        </div>
+    </div>*@
+</div>
+<div class="clr"></div>
+<div class="row">
+    <div class="col col_25 pd_both">
+        <div class="ctrl_group">
+            @Model.OrderTotalToDisplay
+        </div>
+    </div>
+
+    @*<div class="col col_25 pd_both">
+        <div class="ctrl_group">
+            @Model.TaxableItemsTotalToDisplay
+        </div>
+    </div>
+
+    <div class="col col_25 pd_both">
+        <div class="ctrl_group">
+            @Model.NonTaxableItemsTotalToDisplay
+        </div>
+    </div>*@
+</div><!--/.row-->

@@ -1,0 +1,75 @@
+﻿@model PagedList.IPagedList<Deepwell.Front.Models.Order.ProductWithLocationsViewModel>
+@using Deepwell.Common.Extensions
+@using PagedList.Mvc;
+
+<div class="table_panel" style="background-color:white">
+    @if (Model.IsNotNull() && Model.Any())
+    {
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        Select
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.First().ProductNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.First().ProductName)
+                    </td>
+                    @*<td>
+                            @Html.DisplayName("Location")
+                        </td>*@
+                    <td>
+                        @Html.DisplayName("Quantity Available")
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.First().Price)
+                    </td>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr class="activated_row">
+                    <td>
+                        @Html.CheckBox("chk" + item.InventoryId, new { data_inventoryid = item.InventoryId, @class = "itemscheckbox", data_selectedvalue = item.InventoryId })
+                        @Html.Hidden("hdn" + item.InventoryId, item.InventoryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.LocationLabel)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @String.Format("{0:c}", item.Price)
+                    </td>
+                    @*
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TaxableLabel)
+                        </td>*@
+                </tr>
+            }
+
+        </table>
+
+        <div class="pagination_panel">
+            <div class="show_sum">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                of @Model.PageCount
+            </div>
+            @Html.PagedListPager(Model, page => "javascript:OrderDetail.loadProductData(true, " + page + ")")
+        </div>
+    }
+    else
+    {
+        <div class="no_result">No Products were found.</div>
+    }
+</div>
+

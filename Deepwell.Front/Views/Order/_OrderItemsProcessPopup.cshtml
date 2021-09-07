@@ -1,0 +1,19 @@
+﻿@model List<Deepwell.Common.CommonModel.Order.UpdateOrderItemRequest>
+
+@{
+
+    int index = 1;
+    foreach (var orderItem in Model)
+    {
+        <input id="txtShipQuantity@(index)" value="@orderItem.Quantity" type="number" class="shipQuantity"
+               min="1" max="@orderItem.Quantity" data-maxquantity=@orderItem.Quantity data-quantityavailable="@orderItem.Quantity" />
+        <span>     out of @orderItem.Quantity</span>
+        <div class="clr"></div>
+        <div class="message" style="display:none;color:red;"></div>
+
+        index++;
+    }
+}
+
+
+

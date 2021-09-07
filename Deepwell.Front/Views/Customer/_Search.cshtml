@@ -1,0 +1,53 @@
+﻿@model  PagedList.IPagedList<Deepwell.Front.Models.Customer.CustomerSearchModel>
+@using Deepwell.Common.Extensions
+@using PagedList.Mvc;
+
+<div class="table_panel">
+    @if (Model.IsNotNull() && Model.Any())
+    {
+        <table>
+            <thead>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.First().CustomerNumber)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().Name)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().Status)</td>
+                    <td>@Html.DisplayNameFor(model => model.First().Type)</td>
+                    @if (Model.First().IsAdministrator)
+                    {
+                        <td></td>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="activated_row">
+                        <td>@Html.DisplayFor(modelItem => item.CustomerNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                        @if (item.IsAdministrator)
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.CustomerID }, new { @class = "action_btn edit" })
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="pagination_panel">
+            <div class="show_sum">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                of @Model.PageCount
+            </div>
+            @Html.PagedListPager(Model, page => "javascript:ManageCustomer.search(" + page + ")")
+        </div>
+    }
+    else
+    {
+        <div class="no_result">No results were found.</div>
+    }
+</div>

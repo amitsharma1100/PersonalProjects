@@ -1,0 +1,315 @@
+﻿@model Deepwell.Front.Models.Product.AddMudProductViewModel
+@using Deepwell.Common.Enum;
+
+@{
+    ViewBag.Title = "Mud Product";
+}
+
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M19,12h-2v3h-3v2h5V12z M7,9h3V7H5v5h2V9z M21,3H3C1.9,3,1,3.9,1,5v14c0,1.1,0.9,2,2,2h18c1.1,0,2-0.9,2-2V5C23,3.9,22.1,3,21,3z M21,19.01H3V4.99h18V19.01z" />
+            </svg>
+
+            @Model.ViewTitle
+        </h1>
+
+        <div class="right_btns">
+            <a href="@Url.Action("ManageProducts", "Product")" class="link_btn">
+                All Products
+            </a>
+        </div>
+    </div>
+
+    <div class="tab_form">
+        <ul class="tabs">
+            <li class="active" data-panel="product_information">Product Information</li>
+            <li id="liInventoryChangeLogTab" data-panel="inventory_change_log" data-calenderimageurl="@Url.Content("~/Content/images/calendar.gif")">Inventory Change Log</li>
+        </ul>
+
+        <div class="form_pnl_a">
+            <div>
+                <p>
+                    @ViewBag.Message
+                </p>
+            </div>
+
+            <div id="product_information" class="tab_content active">
+                @using (Html.BeginForm("MudProduct", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = "color:red" })
+
+                    <div class="form_panel_g">
+                        <div class="divider_hd">
+                            <span class="txt">Product Detail</span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col col_25 pd_both">
+                                <div class="ctrl_group">
+                                    @Html.LabelFor(model => model.ProductNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.EditorFor(model => model.ProductNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ProductNumber, "", new { @class = "text-danger" })
+                                    @if (Model.IsEditMode)
+                                    {
+                                        @Html.HiddenFor(m => Model.ProductId)
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="col col_25 pd_both">
+                                <div class="ctrl_group">
+                                    @Html.LabelFor(model => model.ProductType, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="static_val">@Model.ProductType</div>
+                                </div>
+                            </div>
+
+                            <div class="col col_25 pd_both">
+                                <div class="ctrl_group">
+                                    @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col col_25 pd_both">
+                                <div class="ctrl_group">
+                                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <span>$</span> @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="clr"></div>
+
+                            <div class="col col_25 pd_both">
+                                <div class="ctrl_group">
+                                    @*@Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                    <label>&nbsp;</label>
+
+                                    <div class="checkbox">
+                                        <label class="toggler">
+                                            <span class="text">Active</span>
+                                            @Html.CheckBoxFor(model => model.IsActive, htmlAttributes: new { @checked = true })
+                                            <span class="checkbox--control"></span>
+                                        </label>
+                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col_25 pd_both">
+                                <div class="ctrl_group">
+                                    @Html.LabelFor(model => model.UnitOfMeasure, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.DropDownListFor(model => model.UnitOfMeasure, Model.UnitOfMeasureOptions, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                        </div><!--/.row-->
+
+
+                        <div class="clr_ht" style="height: 10px;"></div>
+                        <div class="divider_hd">
+                            <span class="txt">Components</span>
+                        </div>
+                        @if (Model.IsEditMode == false)
+                        {
+                            <div class="btn_pnl">
+                                <a id="aProductSelectionPopupOpener" class="link_btn" data-getproducturl='@Url.Action("GetProducts")'>Add Components</a>
+                            </div>
+                            <div class="clr_ht"></div>
+                        }
+
+                        @{Html.RenderPartial("_ComponentSelection"); }
+
+                        <div id="dvComponents"
+                             data-removeurl='@Url.Action("RemoveItem")'
+                             data-updatequantityurl='@Url.Action("UpdateQuantity")'>
+                            @{Html.RenderPartial("_Components", new ViewDataDictionary(Model.ComponentInfo)); }
+                        </div>
+
+                        @if (Model.IsEditMode)
+                        {
+                            <div class="clr_ht" style="height: 10px;"></div>
+                            <div class="divider_hd">
+                                <span class="txt">Inventory Detail</span>
+                            </div>
+
+                            Html.RenderPartial("_ProductInventoryDetail", new ViewDataDictionary(Model.InventoryInformation));
+                        }
+
+                        <div class="clr_ht"></div>
+                        <div class="divider_hd">
+                            <span class="txt">Update Inventory</span>
+                        </div>
+                        <div id="dvInventorySection">
+                            @if (Model.IsEditMode == false)
+                            {
+                                @Html.Hidden("changeType", InventoryChangeType.Created)
+                            <div id="dvInventoryDetailAdd">
+                                <div class="row">
+                                    <div class="col col_20 pd_both">
+                                        <div class="ctrl_group">
+                                            <label>Location</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col col_20 pd_both">
+                                        <div class="ctrl_group">
+                                            <label>Initial Inventory</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clr"></div>
+                                @*<div class="row">
+                                    <div class="col col_20 pd_both">
+                                        <div class="ctrl_group">
+                                            <div class="inline_lft_hding" title="@Model.InventoryInformation[i].LocationName">
+                                                @Model.InventoryInformation[i].LocationName
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col_20 pd_both colCreatedInventory">
+                                        <div class="ctrl_group">
+                                            @Html.TextBoxFor(model => Model.InventoryInformation[i].Quantity, new { @data_changeType = "created", @type = "number", min = "0" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clr"></div>*@
+
+                                @for (int i = 0; i < Model.InventoryInformation.Count; i++)
+                                {
+                                    @Html.HiddenFor(m => Model.InventoryInformation[i].LocationId)
+                                    if (Model.InventoryInformation[i].IsCurrentLocation)
+                                    {
+                                        <div class="row">
+                                            <div class="col col_20 pd_both">
+                                                <div class="ctrl_group">
+                                                    <div class="inline_lft_hding" title="@Model.InventoryInformation[i].LocationName">
+                                                        @Model.InventoryInformation[i].LocationName
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col col_20 pd_both colCreatedInventory">
+                                                <div class="ctrl_group">
+                                                    @Html.TextBoxFor(model => Model.InventoryInformation[i].Quantity, new { @data_changeType = "created", @type = "number", min = "1" })
+                                                    @Html.ValidationMessageFor(model => model.InventoryInformation[i].Quantity, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clr"></div>
+                                    }
+                                }
+                            </div>
+                            }
+                            else
+                            {
+                                <div id="dvInventoryDetailEdit">
+                                    <div class="row inventory_types">
+                                        <div class="col col_25 pd_both">
+                                            <div class="ctrl_group">
+                                                <label class="btn_rdo_link">
+                                                    @Html.RadioButton("changeType", InventoryChangeType.Transferred)
+                                                    <span class="disply__ctrl">Transfer Inventory</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clr"></div>
+
+                                    <div id="dvProductInventory" style="width:100%">
+                                        <div class="row">
+                                            <div class="col col_20 pd_both">
+                                                <div class="ctrl_group">
+                                                    <label>Location</label>
+                                                </div>
+                                            </div>
+
+                                            <div id="headingTransferTo" class="col col_20 pd_both">
+                                                <div class="ctrl_group">
+                                                    <label>Transfer To</label>
+                                                </div>
+                                            </div>
+
+                                            <div id="headingTransferredInventory" class="col col_17 pd_both">
+                                                <div class="ctrl_group">
+                                                    <label>Transferred Inventory</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col_43 pd_both">
+                                                <div class="ctrl_group">
+                                                    <label>Remarks</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clr"></div>
+                                        @for (int i = 0, j = Model.InventoryInformation.Count - 1; i < Model.InventoryInformation.Count; i++, j--)
+                                        {
+                                            @Html.HiddenFor(m => Model.InventoryInformation[i].LocationId)
+                                            @Html.HiddenFor(m => Model.InventoryInformation[i].LocationName)
+                                            @Html.HiddenFor(model => Model.InventoryInformation[i].Quantity)
+                                            if (Model.InventoryInformation[i].IsCurrentLocation)
+                                            {
+                                                <div class="row" data-currentquantity="@Model.InventoryInformation[i].Quantity">
+                                                    <div class="col col_20 pd_both">
+                                                        <div class="ctrl_group">
+                                                            <div class="inline_lft_hding" title="@Model.InventoryInformation[i].LocationName">
+                                                                @Model.InventoryInformation[i].LocationName
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col col_20 pd_both colTransferTo">
+                                                        <div class="ctrl_group">
+                                                            <div class="inline_lft_hding" title="@Model.InventoryInformation[j].LocationName">
+                                                                @Model.InventoryInformation[j].LocationName
+                                                            </div>
+                                                            @Html.HiddenFor(m => Model.InventoryInformation[i].ToLocationId)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col col_17 pd_both colTransferredInventory">
+                                                        <div class="ctrl_group">
+                                                            @Html.TextBoxFor(model => Model.InventoryInformation[i].QuantityTransferred,
+                                                        new { @data_changeType = "transferred", @class = "txtTransferred", @type = "number", min = "0", max = Model.InventoryInformation[i].Quantity })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col col_43 pd_both colRemarks">
+                                                        <div class="ctrl_group">
+                                                            @Html.EditorFor(model => Model.InventoryInformation[i].Remarks)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="clr"></div>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="clr"></div>
+                                </div>
+                            }
+                            <div id="dvQuantityMessage" style="display:none;color:red">Please provide valid quantity</div>
+                        </div>
+                        <div class="btn_pnl">
+                            <input id="btnSaveMudProduct" type="submit" value="Save" class="link_btn" data-iseditmode="@Model.IsEditMode" />
+                            <a href="@Url.Action("ManageProducts", "Product")" class="link_btn faded">Cancel</a>
+                        </div>
+                    </div>
+                }
+
+
+            </div><!--/.product_information-->
+
+            @{Html.RenderAction("InventoryLog", "Product");}
+
+        </div><!--/.form_pnl_a-->
+    </div><!--/.tab_form-->
+</div><!--/.container-->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")    
+    @Scripts.Render("~/bundles/mudProductAddEdit")
+}

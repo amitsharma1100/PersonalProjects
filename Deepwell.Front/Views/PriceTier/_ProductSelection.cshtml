@@ -1,0 +1,34 @@
+﻿<div class="btn_pnl">
+    <a id="aProductSelectionPopupOpener" class="link_btn" data-getproducturl='@Url.Action("GetProducts", "PriceTier")'>Add Products</a>
+</div>
+<div id="dvProductSelectionPopup" style="width:100%;display:none" title="Choose Products"
+     data-addproductstotierurl="@Url.Action("AddProducts")" class="jui_popup">
+    <div class="r_wrapper">
+        <div class="ctrl_panel">
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = "color:red" })
+                <div class="col col_25 pd_both">
+                    <div class="ctrl_group">
+                        @Html.Label("Product Number:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.Editor("ProductNumber", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="col col_25 pd_both">
+                    <div class="ctrl_group">
+                        @Html.Label("Product Name:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.Editor("ProductName", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="btn_ftr">
+                    <a id="aProductsSearch" class="btn blue_btn">Search</a>
+                    <a id="aProductsSearchReset" class="btn grey_btn">Reset</a>
+                    <a id="aProductsAddToTier" class="btn blue_btn">Add To Tier</a>
+                </div>
+                @Html.Hidden("selectedItems")
+            </div>
+        </div><!--/.ctrl_panel-->
+        <div id="dvProductSearchResponse"></div>
+    </div>
+</div>

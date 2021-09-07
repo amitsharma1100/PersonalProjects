@@ -1,0 +1,102 @@
+﻿@model Deepwell.Front.Models.PriceTier.PricingTierViewModel
+
+@{
+    ViewBag.Title = @Model.PageTitle;
+}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,4.52-2.98,8.69-7,9.93
+         			C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z" />
+                <polygon points="7.41,11.59 6,13 10,17 18,9 16.59,7.58 10,14.17" />
+            </svg>
+            @Model.PageTitle
+        </h1>
+
+        <div class="right_btns">
+            <a href="@Url.Action("Index", "PriceTier")" class="link_btn">
+                All Tiers
+            </a>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("SaveTierDetails", "PriceTier", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form_panel_g">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger", @style = "color:red" })
+
+        <div class="divider_hd">
+            <span class="txt">TIER DETAILS</span>
+        </div>
+
+        <div class="row">
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.TierId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @if (Model.IsEditMode)
+                    {
+                        <div class="static_val">@Model.TierId</div>
+                        @Html.HiddenFor(m => Model.TierId)
+                    }
+                </div>
+            </div>
+
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.TierName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.TierName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TierName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    <label>&nbsp;</label>
+
+                    <div class="checkbox">
+                        <label class="toggler">
+                            <span class="text">Active</span>
+                            @Html.CheckBoxFor(model => model.IsActive, htmlAttributes: new { @checked = true })
+                            <span class="checkbox--control"></span>
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clr_ht" style="height: 10px;"></div>
+        <div class="divider_hd">
+            <span class="txt">Products</span>
+        </div>
+        @{Html.RenderPartial("_ProductSelection"); }
+
+        <div class="clr_ht"></div>
+
+        <div id="dvPriceTierItems"
+             data-updatepriceurl='@Url.Action("UpdatePrice")'
+             data-removeproducturl='@Url.Action("RemoveProduct")'>
+            @{Html.RenderPartial("_ProductsSection", new ViewDataDictionary(Model.SelectedProducts)); }
+        </div>
+
+        <div class="btn_pnl">
+            <div class="processing" style="display:none;">
+                Updating...
+            </div>
+            <input id="btnSaveTier" type="submit" value="Save" class="link_btn" />
+            <a href="@Url.Action("Index", "PriceTier")" class="link_btn faded">Cancel</a>
+        </div>
+    </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/PriceTier")
+}
+
+@{ Html.RenderPartial("_Select2Files");}

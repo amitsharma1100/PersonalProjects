@@ -1,0 +1,106 @@
+﻿@model Deepwell.Front.Models.Order.OrderSearchRequestModel
+
+@{
+    ViewBag.Title = "Order Management";
+}
+
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,4.52-2.98,8.69-7,9.93
+         			C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z" />
+                <polygon points="7.41,11.59 6,13 10,17 18,9 16.59,7.58 10,14.17" />
+            </svg>
+            Manage Orders
+        </h1>
+
+        <div class="right_btns">
+            <a class="link_btn" href="@Url.Action("OrderDetail", "Order")">Add new order</a>
+        </div>
+    </div>
+
+    <div class="r_wrapper">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="ctrl_panel">
+                <div class="row">
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.OrderId)
+                            @Html.EditorFor(model => model.OrderId, new { htmlAttributes = new { data_numeric = "true" } })
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.OrderStatus)
+                            @Html.DropDownListFor(model => model.OrderStatus, Model.OrderStatusList)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.OrderDateFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.OrderDateFrom, new { htmlAttributes = new { @class = "form-control", @placeholder = "From" } })
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.OrderDateTo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.OrderDateTo, new { htmlAttributes = new { @class = "form-control", @placeholder = "To" } })
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.ProductNumber)
+                            @Html.EditorFor(model => model.ProductNumber)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.ProductName)
+                            @Html.EditorFor(model => model.ProductName)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.CustomerNumber)
+                            @Html.EditorFor(model => model.CustomerNumber)
+                        </div>
+                    </div>
+
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(model => model.CustomerName)
+                            @Html.EditorFor(model => model.CustomerName)
+                        </div>
+                    </div>
+
+                    <div class="btn_ftr">
+                        <input type="button" id="btnSearch" value="Search" class="btn blue_btn" />
+                        <input type="button" id="btnReset" value="Reset" class="btn grey_btn" />
+                    </div>
+                    <div class="clr_ht" style="height: 10px;"></div>
+
+                </div><!--/.row-->
+            </div><!--/ctrl_panel-->
+
+            <div id="searchData"
+                 data-getorderdetailsurl=@Url.Action("Search", "Order")
+                 data-calenderimageurl="@Url.Content("~/Content/images/calendar.gif")" />
+            <div id="searchResults"></div>
+        }
+
+    </div><!--/.r_wrapper-->
+</div><!--/.container-->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/ManageOrders")
+}

@@ -1,0 +1,187 @@
+﻿@model IEnumerable<Deepwell.Front.Models.Order.OrderDetailItemViewModel>
+@using Deepwell.Common.Extensions
+@using Deepwell.Common.Enum
+
+@if (Model.IsNotNull())
+{
+    <div class="row" id="dvItems">
+        <div class="table_panel">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Select</td>
+                        <td>Action</td>
+                        <td>Line Number</td>
+                        <td>Product Name</td>
+                        @*<td>Location</td>*@
+                        <td>Price(USD)</td>
+                        <td>Quantity</td>
+                        <td>UOM</td>
+                        <td>Item Total</td>
+                        <td>Inventory</td>
+                        <td>Line Status</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        int prevProcessId = 0;
+                        string style1 = "background-color:AliceBlue";
+                        string style2 = "background-color:Cornsilk";
+                        string styleWhite = "background-color:White";
+
+                        string style = style2;
+
+                        int index = 1;
+                        foreach (var item in Model)
+                        {
+                            var quantityBoxDisabled = item.IsQuantityEditable ? "" : "disabled='disabled'";
+                            if (prevProcessId != item.OrderProcessId)
+                            {
+                                style = style == style1 ? style2 : style1;
+                                prevProcessId = item.OrderProcessId;
+                            }
+
+                            <tr id="tr@(index)"
+                                data-inventoryid="@item.InventoryId"
+                                data-locationid="@item.LocationId"
+                                data-productid="@item.ProductId"
+                                data-price="@item.SellPrice"
+                                data-orderdetailid="@item.OrderDetailId"
+                                data-orderprocessid="@item.OrderProcessId"
+                                data-currentstatus="@item.Status"
+                                data-quantity="@item.Quantity"
+                                data-quantityreturned="@item.QuantityReturned"
+                                style="@(item.OrderProcessId ==0 ? styleWhite : style)">
+                                <td title="@item.OrderProcessId">
+                                    @if (item.IsDisplayCheckBox)
+                                    {
+                                        <input type="checkbox" class="selectorderitems" />
+                                    }
+                                </td>
+                                <td style="min-width: 100px">
+                                    <div class="processing" style="display:none;">
+                                        Updating...
+                                    </div>
+                                    @if (item.IsDisplayRemoveButton)
+                                    {
+                                        <a id="aOrderItemDelete@(index)" data-itemaction="remove" class="action_btn del n_d orderItemRemove" title="Remove"></a>
+                                    }
+
+                                    @*@if (item.IsDisplayShipButton)*@
+                                    @if (1 == 2)
+                                    {
+                                        <a id="aOrderItemShipPopupOpener@(index)" data-index="@index" class="action_btn ship n_d shipQuantityPopupOpener" title="Ship"></a>
+
+                                        <div id="dvOrderItemsShipPopUp@(index)" class="orderItemsShipPopUp" title="Ship Items" style="display:none;">
+                                            <input id="txtShipQuantity@(index)" value="@item.Quantity" type="number" class="shipQuantity"
+                                                   min="1" max="@item.Quantity" data-maxquantity=@item.Quantity data-quantityavailable="@item.QuantityAvailable" /> out of @item.Quantity
+                                                <div class="clr"></div>
+                                                <div class="message" style="display:none;color:red;"></div>
+                                                <a id="aOrderItemShip@(index)" data-item="ship" data-trid="tr@(index)" title="Ship" style="cursor:pointer">Ship</a><br />
+                                            </div>
+
+                                        }
+
+                                    @if (item.IsDisplayReturnButton)
+                                    {
+                                        @*<a id="aOrderItemReturn@(index)" data-itemaction="return" style="color:blue;cursor:pointer" class="">Return</a>*@
+
+                                        <a id="aReturnQuantityPopupOpener@(index)" data-index="@index" style="color:blue;cursor:pointer" class="returnQuantityPopupOpener action_btn n_d no_circle return" title="Return"></a>
+
+                                        <div id="dvOrderItemsReturnPopUp@(index)" class="orderItemsReturnPopUp" style="display:none;" title="Return Items">
+                                            <input id="txtReturnQuantity@(index)" value="@item.MaxReturnableQuantity" type="number" class="returnQuantity"
+                                                   min="1" max="@item.MaxReturnableQuantity" data-maxquantity=@item.MaxReturnableQuantity />  out of @item.MaxReturnableQuantity
+                                                <div class="clr" style="height: 15px;"></div>
+                                                @*Enter tax amount: <span>$</span> <input id="txtReturnTax" class="limitQuantity" maxlength="6" />
+                                                    <div class="clr"></div>*@
+                                                <div class="message" style="display:none;color:red;"></div>
+                                                <a id="aOrderItemReturn@(index)" data-item="return" data-trid="tr@(index)" class="return" style="cursor:pointer">Select To Return</a>
+                                            </div>
+                                        }
+
+                                    @if (item.IsDisplayCancelButton)
+                                    {
+                                        <a id="aOrderItemCancel@(index)" data-itemaction="cancel" class="action_btn n_d no_circle cancel" title="Cancel"></a>
+                                    }
+                                </td>
+                                <td>@item.LineNumber</td>
+                                <td>@item.ProductName</td>
+                                @*<td>@item.LocationLabel</td>*@
+                                <td>
+                                    @item.PriceToDisplay
+                                    @if (item.IsDisplayTierPriceSymbol)
+                                    {
+                                        <img src="~/Content/images/star.jpg" style="width:30px;">
+                                    }
+                                </td>
+                                <td>
+                                    <div class="ctrl_group">
+                                        <input id="txtOrderItemQuantity@(index)" value="@item.Quantity" class="orderItemQuantity"
+                                               data-originalquantity=@item.Quantity
+                                               type="number" min="1" max="@item.QuantityAvailable"
+                                               @quantityBoxDisabled />
+                                    </div>
+                                </td>
+                                <td>@item.UnitOfMeasure</td>
+                                <td>
+                                    @item.ItemTotal
+                                </td>
+                                <td>
+                                    @if (item.IsDisplayQuantityAvailable)
+                                    {
+                                        <span class="spnQuantityAvailable">@item.QuantityAvailable</span>
+                                    }
+                                </td>
+
+                                @if (item.InvoiceId > 0)
+                                {
+                                    var invoiceLabel = item.Status.ToString() + "(" + item.InvoiceId + ")";
+                                    <td><a href="@Url.Action("GetInvoicedItems", "Order", new { invoiceId = item.InvoiceId })" target="_blank">@invoiceLabel</a></td>
+                                }
+                                else if (item.CreditMemoId > 0)
+                                {
+                                    var returnLabel = item.Status.ToString() + "(" + item.CreditMemoId + ")";
+                                    <td><a href="@Url.Action("GetReturnedItems", "Order", new { creditMemoId = item.CreditMemoId })" target="_blank">@returnLabel</a></td>
+                                }
+                                else
+                                {
+                                    if (item.Status.Equals(OrderStatus.Invoiced) && item.OrderProcessId > 0)
+                                    {
+                                        <td><a href="~/Order/GetInvoicedItems?invoiceId=@item.OrderProcessId" target="_blank">@item.Status.ToString()</a></td>
+                                    }
+                                    else if (item.Status.Equals(OrderStatus.Shipped) && item.OrderProcessId > 0)
+                                    {
+                                        <td><a href="~/Order/GetShippedItems?invoiceId=@item.OrderProcessId" target="_blank">@item.Status.ToString()</a></td>
+                                    }
+                                    else if (item.Status.Equals(OrderStatus.Returned) && item.OrderProcessId > 0 && item.IsInvoiced)
+                                    {
+                                        <td><a href="~/Order/GetReturnedItems?creditMemoId=@item.OrderProcessId" target="_blank">@item.Status.ToString()</a></td>
+                                    }
+                                    else if (item.Status.Equals(OrderStatus.ShippedAndInvoiced) && item.OrderProcessId > 0)
+                                    {
+                                        <td>
+                                            <a href="~/Order/GetInvoicedItems?invoiceId=@item.OrderProcessId" target="_blank">Invoiced</a>
+                                            <br /><br />
+                                            <a href="~/Order/GetShippedItems?invoiceId=@item.OrderProcessId" target="_blank">Shipped</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.Status.ToString()</td>
+                                    }
+                                }
+                            </tr>
+                            <tr style="display:none;">
+                                <td colspan="10" align="center">
+                                    <div id="dvMessage(@index)" style="display:none;color:red"></div>
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div><!--/.row-->
+}

@@ -1,0 +1,50 @@
+﻿@model Deepwell.Front.Models.Product.ComponentViewModel
+
+@if (Model != null && Model.Components.Count() > 0)
+{
+    <div class="row">
+        <div class="table_panel">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Number</td>
+                        <td>Name</td>
+                        <td style="width:100px;">Quantity</td>
+                        @if (Model.IsReadOnly == false)
+                        {
+                            <td>Quantity Available</td>
+                            <td>Action</td>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model.Components)
+                        {
+                            <tr data-productid="@item.ProductId">
+                                <td>@item.ProductNumber</td>
+                                <td>@item.ProductName</td>
+                                @if (Model.IsReadOnly)
+                                {
+                                    <td> @item.Quantity</td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <div class="ctrl_group">
+                                            <input id="txtQuantity@(item.ProductId)" type="number" class="quantity" value="@item.Quantity" data-originalquantity="@item.Quantity"
+                                                   min="1" max="@item.QuantityAvailable" data-maxquantity=@item.QuantityAvailable data-quantityavailable="@item.QuantityAvailable" />
+                                        </div>
+                                    </td>
+                                    <td>@item.QuantityAvailable</td>
+                                    <td><a class="action_btn del removeComponent" title="Remove">Remove</a> </td>
+                                }
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

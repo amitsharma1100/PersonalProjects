@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "AddNewCustomer";
+}
+
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,4.52-2.98,8.69-7,9.93
+         			C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z" />
+                <polygon points="7.41,11.59 6,13 10,17 18,9 16.59,7.58 10,14.17" />
+            </svg>
+            Add New Customer
+        </h1>
+
+        <div class="right_btns">
+            <a href=@Url.Action("Index", "Customer")>
+                <input type="button" value="All customers" class="link_btn" />
+            </a>
+        </div>
+    </div>
+
+    <div class="form_panel_g">
+        <div class="divider_hd">
+            <span class="txt">CUSTOMER DETAILS</span>
+        </div>
+
+        <div class="row">
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Customer ID</label>
+                    <input type="text" name="" id="" value="" placeholder="Customer ID" />
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Customer Name</label>
+                    <input type="text" name="" id="" placeholder="Customer Name" />
+                </div>
+            </div>
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Customer Status</label>
+                    <input type="text" name="" id="" placeholder="Customer Status" />
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Customer Type</label>
+                    <input type="text" name="" id="" placeholder="Customer Type" />
+                </div>
+            </div>
+        </div><!--/.row-->
+
+        <div class="clr_ht"></div>
+        <div class="divider_hd mr_tp_20">
+            <span class="txt">CUSTOMER DETAILS</span>
+        </div>
+
+        <div class="row">
+            <div class="col col_50 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Email</label>
+                    <input type="text" name="" id="" placeholder="Email" />
+                </div>
+            </div>
+
+            <div class="col col_50 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Phone</label>
+                    <input type="text" name="" id="" placeholder="Phone" />
+                </div>
+            </div>
+        </div><!--/.row-->
+
+        <div class="clr_ht"></div>
+        <div class="divider_hd mr_tp_20">
+            <span class="txt">Address DETAILS</span>
+        </div>
+
+        <div class="row">
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Address Line 1</label>
+                    <input type="text" name="" id="" placeholder="Address Line 1" />
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Address Line 2</label>
+                    <input type="text" name="" id="" placeholder="Address Line 2" />
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Country</label>
+                    <input type="text" name="" id="" placeholder="Country" />
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    <label for="">State</label>
+                    <input type="text" name="" id="" placeholder="State" />
+                </div>
+            </div>
+
+            <div class="col col_50 pd_both">
+                <div class="ctrl_group">
+                    <label for="">Zip Code</label>
+                    <input type="text" name="" id="" placeholder="Zip Code" />
+                </div>
+            </div>
+
+            <div class="col col_50 pd_both">
+                <div class="ctrl_group">
+                    <label for="">City</label>
+                    <input type="text" name="" id="" placeholder="City" />
+                </div>
+            </div>
+            
+            <div class="btn_pnl">
+                <button type="submit" class="link_btn">Submit</button>
+            </div>
+        </div><!--/.row-->
+    </div><!--/.form_panel_g-->
+</div>
+

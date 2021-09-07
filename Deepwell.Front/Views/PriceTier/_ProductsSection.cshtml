@@ -1,0 +1,67 @@
+﻿@model List<Deepwell.Front.Models.PriceTier.PriceTierProduct>
+@using Deepwell.Common.Extensions
+@using Deepwell.Common.Enum;
+
+<div class="table_panel">
+    @if (Model.IsNotNull())
+    {
+        var counter = 1;
+        <table id="priceTierProducts">
+            <thead>
+                <tr>
+                    <td>
+                        SNo
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.First().ProductNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.First().ProductTitle)
+                    </td>
+                    <td>
+                        @Html.LabelFor(model => model.First().Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count(); i++)
+                {
+                if (Model[i].ProductStatus == PriceTierProductStatus.Existing || Model[i].ProductStatus == PriceTierProductStatus.New || Model[i].ProductStatus == PriceTierProductStatus.Updated)
+                {
+                <tr class="activated_row">
+                    <td>
+                        @(counter++)
+                    </td>
+                    <td>
+                        <div class="ctrl_group">
+                            @Html.DisplayFor(modelItem => Model[i].ProductNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ctrl_group">
+                            @Html.DisplayFor(modelItem => Model[i].ProductTitle, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ctrl_group">
+                            <span>$</span> @Html.EditorFor(model => Model[i].Price, new { htmlAttributes = new { @class = "form-control item-price", @style="width:50%", @productId = Model[i].ProductId, onchange = "PriceTier.updatePrice(this, event);" } })
+                            @Html.ValidationMessageFor(model => Model[i].Price, "", new { @class = "text-danger" })
+                        </div>
+                    </td>
+                    <td>
+                        <a href="javascript:PriceTier.removeProduct(@Model[i].ProductId)" class="action_btn edit" title="Remove">Remove</a>
+                    </td>
+                </tr>
+                }
+                }
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <div class="no_result">No results were found.</div>
+    }
+</div>

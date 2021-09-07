@@ -1,0 +1,390 @@
+﻿@model Deepwell.Front.Models.Order.OrderDetailViewModel
+
+@{
+    ViewBag.Title = @Model.PageTitle;
+}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,4.52-2.98,8.69-7,9.93
+         			C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z" />
+                <polygon points="7.41,11.59 6,13 10,17 18,9 16.59,7.58 10,14.17" />
+            </svg>
+            @Model.PageTitle
+        </h1>
+
+        <div class="right_btns">
+            <a href="@Url.Action("Index", "Order")" class="link_btn">
+                All Orders
+            </a>
+        </div>
+    </div>
+
+    <h3 class="text-danger hidden" id="divErrorMessage"></h3>
+
+    @using (Html.BeginForm("SaveOrderDetails", "Order", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form_panel_g">
+        <div class="divider_hd">
+            <span class="txt">ORDER DETAILS</span>
+        </div>
+
+        <div class="row">
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.OrderId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @if (Model.IsEditMode)
+                    {
+                        <div class="static_val">@Model.OrderId</div>
+                        @Html.HiddenFor(m => Model.OrderId)
+                    }
+                    else
+                    {
+                        <div class="static_val">@Model.NewOrderId</div>
+                    }
+
+                    @Html.HiddenFor(m => Model.OrderStatus)
+                    @Html.HiddenFor(m => Model.OrderDate)
+
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.FormattedOrderDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="static_val">@Model.FormattedOrderDate</div>
+                </div>
+            </div>
+        </div><!--/.row-->
+
+        <div class="clr_ht"></div>
+        <div class="divider_hd mr_tp_20">
+            <span class="txt">CUSTOMER DETAILS</span>
+        </div>
+
+        <div class="row">
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(m => m.CustomerId)
+                    @Html.DropDownListFor(m => m.CustomerId, Model.CustomersList, "Select Customer")
+                    @Html.ValidationMessageFor(m => m.CustomerId, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(m => m.CustomerName, Model.CustomerName)
+                    @Html.HiddenFor(m => m.CustomerEmail, Model.CustomerEmail)
+                    @Html.HiddenFor(m => m.Phone, Model.Phone)
+                    @Html.HiddenFor(m => m.OrderDate, Model.OrderDate)
+                    @Html.HiddenFor(m => m.IsOrderHeaderEditable, Model.IsOrderHeaderEditable)
+                </div>
+            </div>
+
+            @if (Model.IsDisplayPriceTierList)
+            {
+                <div class="col col_33 pd_both">
+                    <div class="ctrl_group">
+                        @Html.LabelFor(m => m.TierId)
+                        @Html.DropDownListFor(m => m.TierId, Model.PriceTierList)
+                    </div>
+                </div>
+            }
+        </div><!--/.row-->
+
+        <div class="clr_ht"></div>
+        <div class="divider_hd mr_tp_20">
+            <span class="txt">Billing Address</span>
+        </div>
+
+        <div id="dvBillingAddress" class="row">
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.BillingAddress.WellName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.BillingAddress.WellName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BillingAddress.WellName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(m => m.BillingAddress.County)
+                    @Html.EditorFor(model => model.BillingAddress.County, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BillingAddress.County, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(m => m.BillingAddress.City)
+                    @Html.EditorFor(model => model.BillingAddress.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BillingAddress.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.BillingAddress.States, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.DropDownListFor(model => model.BillingAddress.StateId, Model.BillingAddress.States, "Select State")
+                    @Html.ValidationMessageFor(model => model.BillingAddress.StateId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(m => m.BillingAddress.Zipcode)
+                    @Html.EditorFor(model => model.BillingAddress.Zipcode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BillingAddress.Zipcode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div><!--/.row-->
+
+        <div class="clr_ht"></div>
+        <div class="divider_hd mr_tp_20">
+            <span class="txt">Shipping Address</span>
+        </div>
+
+
+        <div id="dvAddressChange" class="row" style="overflow: hidden; padding-bottom: 18px;">
+            <div class="col col_50 pd_both">
+                <div class="ctrl_group">
+                    <label class="btn_rdo_link">
+                        @Html.RadioButton("rbShippingAddress", "same", isChecked: Model.IsEditMode ? Model.IsBillingAndShippinAddressSame : true)
+                        <span class="disply__ctrl">Same as Billing Address</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col col_50 pd_both">
+                <div class="ctrl_group">
+                    <label class="btn_rdo_link">
+                        @Html.RadioButton("rbShippingAddress", "change", isChecked: Model.IsEditMode ? Model.IsBillingAndShippinAddressSame == false : false)
+                        <span class="disply__ctrl">Change</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="dvShippingAddress" class="row">
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.ShippingAddress.WellName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.ShippingAddress.WellName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShippingAddress.WellName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.ShippingAddress.County, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.ShippingAddress.County, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShippingAddress.County, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_33 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.ShippingAddress.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.ShippingAddress.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShippingAddress.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.ShippingAddress.States, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.DropDownListFor(model => model.ShippingAddress.StateId, Model.ShippingAddress.States, "Select State")
+                    @Html.ValidationMessageFor(model => model.ShippingAddress.StateId, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ShippingAddress.StateId)
+                </div>
+            </div>
+
+            <div class="col col_25 pd_both">
+                <div class="ctrl_group">
+                    @Html.LabelFor(model => model.ShippingAddress.Zipcode, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.ShippingAddress.Zipcode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShippingAddress.Zipcode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div><!--/.row-->
+
+        <div class="clr_ht"></div>
+        <div class="divider_hd mr_tp_20">
+            <span class="txt">Product Detail</span>
+        </div>
+        @if (Model.IsDisplayAddProductsButton)
+        {
+            Html.RenderPartial("_ProductSelection");
+        }
+
+        <div class="row">
+            <div id="dvInvoicesList">
+                @if (Model.IsInvoicesListVisible)
+                {
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(m => m.InvoiceId)
+                            @Html.DropDownListFor(m => m.InvoiceId, Model.InvoicesList)
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div id="dvShipmentList">
+                @if (Model.IsShipmentListVisible)
+                {
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(m => m.ShipmentId)
+                            @Html.DropDownListFor(m => m.ShipmentId, Model.ShipmentList)
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div id="dvCreditMemoList">
+                @if (Model.IsCreditMemoListVisible)
+                {
+                    <div class="col col_25 pd_both">
+                        <div class="ctrl_group">
+                            @Html.LabelFor(m => m.CreditMemoId)
+                            @Html.DropDownListFor(m => m.CreditMemoId, Model.CreditMemoList)
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="col col_50 pd_both" id="dvOrderActionButtons">
+                @{
+                    var showInovice = Model.IsDisplayInvoiceButton ? "" : "style=display:none";
+                    var showLastInovice = Model.IsDisplayLastInvoiceButton ? "" : "style=display:none";
+                }
+            </div>
+        </div>
+
+        <div class="clr_ht"></div>
+
+        <a id="aShipMultiplePopUpOpener" class="link_btn" title="Ship Multiple" data-source="ship">Ship Multiple</a>
+        <a id="aInvoiceMultiplePopupOpener" class="link_btn" title="Invoice Multiple" data-source="invoice">Invoice Multiple</a>
+        <a id="aCreditMemoMultiplePopupOpener" class="link_btn" title="Return Items" data-source="return">Return Multiple</a>
+        <div class="clr_ht"></div>
+
+        @*pop up starts*@
+        <div id="dvProcessMultipleItems" class="MultipleShipPopUp" title="Ship/Invoice Items" style="display:none;">
+            <div id="dvShippingFields">
+                <div class="row">
+                    <div class="col col_100 pd_both">
+                        <div class="ctrl_group">
+                            <span class="control-label col-md-2"> PO Number:</span>
+                            <input id="txtPoNumber" type="text" />
+                        </div>
+                    </div>
+                </div>
+                <div class="clr"></div>
+                <div class="row">
+                    <div class="col col_100 pd_both">
+                        <div class="ctrl_group">
+                            <span class="control-label col-md-2">Shipping Via:</span>
+                            <input id="txtShippingVia" type="text" />
+                        </div>
+                    </div>
+                </div>
+                <div class="clr"></div>
+                <div class="row">
+                    <div class="col col_100 pd_both">
+                        <div class="ctrl_group">
+                            <span class="control-label col-md-2">Tracking Id:</span>
+                            <input id="txtTrackingId" type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.IsTaxable)
+            {
+                <div class="clr"></div>
+                <div id="dvTaxPercentage" class="row">
+                    <div class="col col_100 pd_both">
+                        <div class="ctrl_group">
+                            <span class="control-label col-md-2">Tax Percentage (%):</span>
+                            <input id="txtTaxPercentage" type="number" min="1" max="100" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="clr"></div>
+            <div id="dvComments" class="row">
+                <div class="col col_100 pd_both">
+                    <div class="ctrl_group">
+                        <span class="control-label col-md-2">Comments:</span>
+                        <input id="txtComments" type="text" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="clr"></div>
+            <div class="message" style="display:none;color:red;"></div>
+            <div class="clr" style="height:10px;"></div>
+            <div id="divItemsError" class="text-danger hidden" style="color:red"></div>
+            @*pop up ends*@
+            <a id="aProcessOrderItems" style="margin-left:40%" class="link_btn"></a>
+            <br />
+        </div>
+
+        <div id="dvProcessReturnMultipleItems" class="MultipleReturnPopUp" data-itemstatus="" title="Return Items" style="display:none;">
+            <div id="dvTaxAmount">
+                <span>Enter Tax Amount: $</span> <input id="txtTaxAmount" class="limitQuantity" type="number" min="1" max="100" /><br />
+            </div>
+            <div id="dvReturnError" class="text-danger hidden" style="color:red"></div>
+            <div class="clr" style="height:50px;"></div>
+            <a id="aProcessCreditMemoItems" style="margin-left:40%" class="link_btn">Return Item(s)</a>
+            <br />
+        </div>
+        <div id="dvOrderDetailItems"
+             data-orderid="@Model.OrderId"
+             data-orderdetailurl="@Url.Action("OrderDetail", new { Id = Model.OrderId })"
+             data-orderitemupdateurl='@Url.Action("UpdateOrderItem")'
+             data-viewinvoicedetailsurl='@Url.Action("GetInvoicedItems")'
+             data-viewreturnreporturl='@Url.Action("GetReturnedItems")'
+             data-viewshipmentdetailsurl='@Url.Action("GetShippedItems")'
+             data-updatequantityurl='@Url.Action("UpdateQuantity")'
+             data-processorderitems='@Url.Action("ProcessOrderItems")'
+             data-addreturnitemtosession='@Url.Action("AddItemForCreditMemo")'
+             data-processcreditmemoitems='@Url.Action("ProcessCreditMemo")'>
+            @{Html.RenderPartial("_OrderDetailItemsAdvanced", new ViewDataDictionary(Model.Items)); }
+        </div>
+
+        <div class="clr_ht"></div>
+
+        <div id="dvOrderSummary">
+            @{ Html.RenderPartial("_OrderSummary", new ViewDataDictionary(Model.OrderSummaryInfo));}
+        </div>
+
+        <div class="btn_pnl">
+            <button id="btnSave" type="submit" class="link_btn">Save</button>
+            <a href="@Url.Action("index", "Order")" class="link_btn faded">Back</a>
+        </div>
+
+    </div><!--/.form_panel_g-->
+        <div id="orderDetailData"
+             data-getcustomerdetailsurl=@Url.Action("GetCustomerDetails", "Order")
+             data-updatepricetierinsessionurl=@Url.Action("UpdatePriceTierInSession", "Order") />
+        }
+
+    </div>
+@section Scripts {
+    <script>
+        $(function () {
+            $("#order_date").datepicker();
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/OrderDetail")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+}
+
+
+@{ Html.RenderPartial("_Select2Files");}

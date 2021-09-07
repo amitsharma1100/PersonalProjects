@@ -1,0 +1,89 @@
+﻿@model PagedList.IPagedList<Deepwell.Front.Models.PriceTier.PricingTierViewModel>
+@using Deepwell.Common.Extensions
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Price Tiers";
+}
+
+<div class="container">
+    <div class="main_heading">
+        <h1 class="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,4.52-2.98,8.69-7,9.93
+         			C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z" />
+                <polygon points="7.41,11.59 6,13 10,17 18,9 16.59,7.58 10,14.17" />
+            </svg>
+            Pricing Tiers
+        </h1>
+
+        <div class="top_msgs" style="color:green">
+            <h4>@ViewBag.Message</h4>
+        </div>
+
+        <div class="right_btns">
+            <a href="@Url.Action("Details", "PriceTier")" class="link_btn">
+                Add New Tier
+            </a>
+        </div>
+    </div>
+
+    <div class="r_wrapper">
+        <div class="table_panel">
+            @if (Model.IsNotNull() && Model.Any())
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                @Html.DisplayNameFor(model => model.First().TierId)
+                            </td>
+                            <td>
+                                @Html.DisplayNameFor(model => model.First().TierName)
+                            </td>
+                            <td>
+                                @Html.DisplayNameFor(model => model.First().IsActiveDisplay)
+                            </td>
+                            @if (Model.First().IsAdministrator)
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="activated_row">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TierId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TierName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActiveDisplay)
+                            </td>
+                            @if (item.IsAdministrator)
+                            {
+                                <td>
+                                    <a href="@item.EditUrl" class="action_btn edit" title="Edit">Edit</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+
+                <div class="pagination_panel">
+                    <div class="show_sum">
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                        of @Model.PageCount
+                    </div>
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+            }
+            else
+            {
+                <div class="no_result">No results were found.</div>
+            }
+        </div>
+    </div>
+</div>
