@@ -1,0 +1,148 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Roboto', sans-serif;
+}
+
+body {
+	background: #eff3f6;
+}
+
+input {
+	outline: 0;
+}
+
+/* LOGIN PAGE CSS*/
+.login_container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
+
+	.login_container .heading {
+		text-align: center;
+		font-size: 1.4rem;
+		padding: 1.5625rem 1.875rem;
+		padding-top: 3.125rem !important;
+		border-bottom: 1px solid #e6eaee;
+		background-color: #fafbfc;
+		color: #354052;
+		font-weight: 400;
+		letter-spacing: 1px;
+	}
+
+	.login_container .login_form {
+		background: #ffffff;
+		padding: 0;
+		border-radius: 4px;
+		width: 450px;
+		border: 1px solid #e6eaee;
+		border-radius: 4px;
+		position: relative;
+		margin: 37px auto;
+	}
+
+		.login_container .login_form .icon {
+			width: 70px;
+			height: 70px;
+			margin: 0 auto;
+			border-radius: 50%;
+			background: linear-gradient(180deg,#2ea1f8,#1990ea);
+			position: absolute;
+			right: 0;
+			left: 0;
+			top: -35px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.login_container .login_form p {
+			margin-bottom: 20px;
+		}
+
+			.login_container .login_form p label {
+				display: block;
+				-ms-flex-preferred-size: 100%;
+				flex-basis: 100%;
+				margin: 0 0 10px;
+				color: #7f8fa4;
+				font-size: .875rem;
+				font-weight: 400;
+			}
+
+			.login_container .login_form p input, .login_container .login_form p select {
+				display: block;
+				width: 100%;
+				margin: 0;
+				padding: .69375rem .9375rem;
+				transition: all .3s;
+				border: 1px solid #dfe3e9;
+				border-radius: 4px;
+				background-color: #fff;
+				color: #354052;
+				font-size: .875rem;
+				font-weight: 400;
+				resize: none;
+			}
+
+				.login_container .login_form p input:-webkit-autofill {
+					-webkit-box-shadow: 0 0 0 30px white inset;
+				}
+
+		.login_container .login_form .ctrl_group .btn {
+			background: linear-gradient(180deg,#2ea1f8,#1990ea);
+			border: 1px solid;
+			border-color: #1a91eb;
+			display: block;
+			width: 100%;
+			color: #fff;
+			padding: .5rem 1.25rem;
+			margin: 25px auto 0;
+			line-height: 1.5;
+			font-size: .875rem;
+			border-radius: 4px;
+			font-weight: 400;
+		}
+
+			.login_container .login_form .ctrl_group .btn + a {
+				display: inline-block;
+				color: #2ea1f8;
+				font-size: 13px;
+				margin-top: 12px;
+			}
+
+	.login_container .controls {
+		padding: 40px;
+	}
+
+
+.field-validation-error {
+	color: #ff0000;
+	font-size: 13px;
+	margin-top: 5px;
+}
+
+.validation-summary-errors {
+	margin-bottom: 19px;
+}
+
+.validation-summary-errors ul li {
+	color: #ff0000;
+	font-size: 13px;
+	margin-top: 5px;
+}
+
+.confirm_txt {
+	text-align: center;
+	font-size: 14px;
+	line-height: 23px;
+	margin-bottom: 0 !important;
+	letter-spacing: 1px;
+}
